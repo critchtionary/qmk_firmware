@@ -13,15 +13,13 @@ static void render_logo(void) {
 
 static void print_status_narrow(void) {
     oled_write_P(PSTR("\n\n"), false);
-    switch (get_highest_layer(layer_state)) {
-        case 0:
-            oled_write_ln_P(PSTR("Qwrt"), false);
-            break;
-        default:
-            oled_write_P(PSTR("Mod\n"), false);
-            break;
+    if (keymap_config.swap_lctl_lgui) {
+        oled_write_ln_P(PSTR("Mac"), false);
+    } else {
+        oled_write_ln_P(PSTR("Win"), false);
     }
     oled_write_P(PSTR("\n\n"), false);
+
     oled_write_ln_P(PSTR("LAYER"), false); 
     switch (get_highest_layer(layer_state)) {
         case 0:
@@ -34,11 +32,13 @@ static void print_status_narrow(void) {
             oled_write_P(PSTR("Cmds\n"), false);
             break;
         default:
-            oled_write_ln_P(PSTR("Undef"), false);
+            oled_write_P(PSTR("Undef"), false);
     }
     oled_write_P(PSTR("\n\n"), false);
+
     led_t led_usb_state = host_keyboard_led_state();
     oled_write_ln_P(PSTR("CPSLK"), led_usb_state.caps_lock);
+    oled_write_ln_P(PSTR("SCRLK"), led_usb_state.scroll_lock);
 }
 
 bool oled_task_user(void) {
