@@ -71,7 +71,7 @@ void print_status_narrow(void) {
             oled_write_ln_P(PSTR("Qwrt"), false);
             break;
         case 1:
-            oled_write_ln_P(PSTR("Clmk"), false);  // TODO - delete/override this?
+            oled_write_ln_P(PSTR("Clmk"), false);
             break;
         default:
             oled_write_P(PSTR("Mod\n"), false);
