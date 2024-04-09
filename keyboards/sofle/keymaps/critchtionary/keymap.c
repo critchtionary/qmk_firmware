@@ -203,9 +203,14 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
         } else {
             tap_code(KC_VOLU);
         }
-        return false;
+   } else if (index == 1) {
+        if (clockwise) {
+            tap_code(KC_MS_WH_DOWN);
+        } else {
+            tap_code(KC_MS_WH_UP);
+        }
     }
-    return true;
+    return false;
 }
 
 #endif
