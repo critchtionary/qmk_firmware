@@ -6,8 +6,9 @@
 
 enum sofle_layers {
     _QWERTY,
-    _SYMBOLS,
     _COMMANDS,
+    _SYMBOLS,
+
     _ADJUST,
 };
 
