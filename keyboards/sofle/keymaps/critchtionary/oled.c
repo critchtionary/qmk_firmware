@@ -55,10 +55,10 @@ static void print_status_narrow(void) {
             oled_write_P(PSTR("Base\n"), false);
             break;
         case 1:
-            oled_write_P(PSTR("Symbl"), false);
+            oled_write_P(PSTR("Cmds\n"), false);
             break;
         case 2:
-            oled_write_P(PSTR("Cmds\n"), false);
+            oled_write_P(PSTR("Symbl"), false);
             break;
         default:
             oled_write_P(PSTR("Undef"), false);
