@@ -17,6 +17,10 @@ enum custom_keycodes {
     KC_PRVWD,
     KC_NXTWD,
     KC_SNIP,
+    KC_WINUP,
+    KC_WINDN,
+    KC_WINLF,
+    KC_WINRT
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -65,8 +69,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, KC_CIRC, KC_PIPE, KC_COLN, KC_LCBR, KC_RCBR, _______,       _______, KC_0,    KC_1,  KC_2,  KC_3,  KC_NUBS, _______,
                        _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______
 ),
-// TODO: 
-// - Commands for moving windows
 /* COMMANDS
  * ,----------------------------------------.                     ,-----------------------------------------.
  * | ESC  |  F1  |  F2  |  F3  |  F4  |  F5  |                    |  F6  |  F7  |  F8  |  F9  | F10  | F11  |
@@ -92,9 +94,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------.                    ,-----------------------------------------.
  * |      |      |      |      |      |      |                    |      |      |      |      |      |      |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |QK_BOOT|     |QWERTY|      |      |      |                    |      |      |      |      |      |      |
+ * |QK_BOOT|     |QWERTY|      |      |      |                    |      |      | WinUp|      |      |      |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |      |      |MACWIN|      |      |      |-------.    ,-------|      |      |      |      |      |      |
+ * |      |      |MACWIN|      |      |      |-------.    ,-------|      |WinLf | WinDn| WinRt|      |      |
  * |------+------+------+------+------+------|       |    |       |------+------+------+------+------+------|
  * |      |      |      |      |      |      |-------|    |-------|      |      |      |      |      |      |
  * `-----------------------------------------/       /     \      \-----------------------------------------'
@@ -103,13 +105,37 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *            `-----------------------------------'           '------''---------------------------'
  */
   [_ADJUST] = LAYOUT(
-  XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX,                       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-  QK_BOOT, XXXXXXX, KC_QWERTY, XXXXXXX, XXXXXXX, XXXXXXX,                       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-  XXXXXXX, XXXXXXX, CG_TOGG,   XXXXXXX, XXXXXXX, XXXXXXX,                       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX,                       XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX,
+  QK_BOOT, XXXXXXX, KC_QWERTY, XXXXXXX, XXXXXXX, XXXXXXX,                       XXXXXXX, XXXXXXX,  KC_WINUP, XXXXXXX,  XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, CG_TOGG,   XXXXXXX, XXXXXXX, XXXXXXX,                       XXXXXXX, KC_WINLF, KC_WINDN, KC_WINRT, XXXXXXX, XXXXXXX,
   XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
                    _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______
   )
 };
+
+void move_window(uint16_t direction, bool pressed) {
+    if (pressed) {
+        if (keymap_config.swap_lctl_lgui) {
+            // Mac
+            register_mods(mod_config(MOD_LGUI));
+            register_mods(mod_config(MOD_LCTL));
+            register_code(direction);
+        } else {
+            // Windows
+            register_mods(mod_config(MOD_LGUI));
+            register_code(direction);
+        }
+    } else {
+        if (keymap_config.swap_lctl_lgui) {
+            unregister_mods(mod_config(MOD_LGUI));
+            unregister_mods(mod_config(MOD_LCTL));
+            unregister_code(direction);
+        } else {
+            unregister_mods(mod_config(MOD_LGUI));
+            unregister_code(direction);
+        }
+    }
+}
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
@@ -184,6 +210,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     unregister_code(KC_S);
                 }
             }
+            break;
+        case KC_WINUP:
+            move_window(KC_UP, record->event.pressed);
+            break;
+        case KC_WINDN:
+            move_window(KC_DOWN, record->event.pressed);
+            break;
+        case KC_WINLF:
+            move_window(KC_LEFT, record->event.pressed);
+            break;
+        case KC_WINRT:
+            move_window(KC_RIGHT, record->event.pressed);
             break;
     }
     return true;
