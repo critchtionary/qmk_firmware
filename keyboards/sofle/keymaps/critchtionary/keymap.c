@@ -20,7 +20,8 @@ enum custom_keycodes {
     KC_WINUP,
     KC_WINDN,
     KC_WINLF,
-    KC_WINRT
+    KC_WINRT,
+    KC_WINFL
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -94,7 +95,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------.                    ,-----------------------------------------.
  * |      |      |      |      |      |      |                    |      |      |      |      |      |      |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |QK_BOOT|     |QWERTY|      |      |      |                    |      |      | WinUp|      |      |      |
+ * |QK_BOOT|     |QWERTY|      |      |      |                    |      |WinFl | WinUp|      |      |      |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * |      |      |MACWIN|      |      |      |-------.    ,-------|      |WinLf | WinDn| WinRt|      |      |
  * |------+------+------+------+------+------|       |    |       |------+------+------+------+------+------|
@@ -106,7 +107,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
   [_ADJUST] = LAYOUT(
   XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX,                       XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX,
-  QK_BOOT, XXXXXXX, KC_QWERTY, XXXXXXX, XXXXXXX, XXXXXXX,                       XXXXXXX, XXXXXXX,  KC_WINUP, XXXXXXX,  XXXXXXX, XXXXXXX,
+  QK_BOOT, XXXXXXX, KC_QWERTY, XXXXXXX, XXXXXXX, XXXXXXX,                       XXXXXXX, KC_WINFL, KC_WINUP, XXXXXXX,  XXXXXXX, XXXXXXX,
   XXXXXXX, XXXXXXX, CG_TOGG,   XXXXXXX, XXXXXXX, XXXXXXX,                       XXXXXXX, KC_WINLF, KC_WINDN, KC_WINRT, XXXXXXX, XXXXXXX,
   XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
                    _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______
@@ -223,7 +224,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_WINRT:
             move_window(KC_RIGHT, record->event.pressed);
             break;
-    }
+        case KC_WINFL:
+            move_window(KC_ENT, record->event.pressed);
+            break;
+        }
     return true;
 }
 
