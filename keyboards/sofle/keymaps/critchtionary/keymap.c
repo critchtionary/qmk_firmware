@@ -61,12 +61,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *            |      |      |      |      |/       /         \      \ |      |      |      |      |
  *            `-----------------------------------'           '------''---------------------------'
  */
-
+// TODO - add pound key
 [_SYMBOLS] = LAYOUT(
   _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                           KC_F6,   KC_F7, KC_F8, KC_F9, KC_F10,  KC_F11,
   _______, KC_TILD, KC_MINS, KC_DQUO, KC_LBRC, KC_RBRC,                         KC_PLUS, KC_7,  KC_8,  KC_9,  KC_ASTR, KC_F12,
   _______, KC_EXLM, KC_UNDS, KC_QUOT, KC_LPRN, KC_RPRN,                         KC_EQL,  KC_4,  KC_5,  KC_6,  KC_HASH, _______,
-  _______, KC_CIRC, KC_PIPE, KC_COLN, KC_LCBR, KC_RCBR, _______,       _______, KC_0,    KC_1,  KC_2,  KC_3,  KC_NUBS, _______,
+  _______, KC_CIRC, KC_PIPE, KC_COLN, KC_LCBR, KC_RCBR, _______,       _______, KC_0,    KC_1,  KC_2,  KC_3,  KC_BSLS, _______,
                        _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______
 ),
 /* COMMANDS
@@ -117,8 +117,8 @@ void move_window(uint16_t direction, bool pressed) {
     if (pressed) {
         if (keymap_config.swap_lctl_lgui) {
             // Mac
+            register_mods(mod_config(MOD_LALT));
             register_mods(mod_config(MOD_LGUI));
-            register_mods(mod_config(MOD_LCTL));
             register_code(direction);
         } else {
             // Windows
@@ -127,8 +127,8 @@ void move_window(uint16_t direction, bool pressed) {
         }
     } else {
         if (keymap_config.swap_lctl_lgui) {
+            unregister_mods(mod_config(MOD_LALT));
             unregister_mods(mod_config(MOD_LGUI));
-            unregister_mods(mod_config(MOD_LCTL));
             unregister_code(direction);
         } else {
             unregister_mods(mod_config(MOD_LGUI));
@@ -190,7 +190,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 if (keymap_config.swap_lctl_lgui) {
                     // Mac
-                    register_mods(mod_config(MOD_LGUI));
+                    register_mods(mod_config(MOD_LCTL));
                     register_mods(mod_config(MOD_LSFT));
                     register_code(KC_4);
                 } else {
@@ -201,7 +201,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 }
             } else {
                 if (keymap_config.swap_lctl_lgui) {
-                    unregister_mods(mod_config(MOD_LGUI));
+                    unregister_mods(mod_config(MOD_LCTL));
                     unregister_mods(mod_config(MOD_LSFT));
                     unregister_code(KC_4);
                 } else {
