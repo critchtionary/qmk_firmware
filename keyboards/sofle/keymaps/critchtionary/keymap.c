@@ -21,7 +21,8 @@ enum custom_keycodes {
     KC_WINDN,
     KC_WINLF,
     KC_WINRT,
-    KC_WINFL
+    KC_WINFL,
+    KC_LOCK,
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -93,7 +94,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 /* ADJUST
  * ,-----------------------------------------.                    ,-----------------------------------------.
- * |      |      |      |      |      |      |                    |      |      |      |      |      |      |
+ * | Lock |      |      |      |      |      |                    |      |      |      |      |      |      |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * |QK_BOOT|     |QWERTY|      |      |      |                    |      |WinFl | WinUp|      |      |      |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
@@ -106,7 +107,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *            `-----------------------------------'           '------''---------------------------'
  */
   [_ADJUST] = LAYOUT(
-  XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX,                       XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX,
+  KC_LOCK, XXXXXXX, XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX,                       XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX,
   QK_BOOT, XXXXXXX, KC_QWERTY, XXXXXXX, XXXXXXX, XXXXXXX,                       XXXXXXX, KC_WINFL, KC_WINUP, XXXXXXX,  XXXXXXX, XXXXXXX,
   XXXXXXX, XXXXXXX, CG_TOGG,   XXXXXXX, XXXXXXX, XXXXXXX,                       XXXXXXX, KC_WINLF, KC_WINDN, KC_WINRT, XXXXXXX, XXXXXXX,
   XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
@@ -227,7 +228,30 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_WINFL:
             move_window(KC_ENT, record->event.pressed);
             break;
-        }
+        case KC_LOCK:
+            if (record->event.pressed) {
+                if (keymap_config.swap_lctl_lgui) {
+                    // Mac
+                    register_mods(mod_config(MOD_LCTL));
+                    register_mods(mod_config(MOD_LGUI));
+                    register_code(KC_Q);
+                } else {
+                    // Windows
+                    register_mods(mod_config(MOD_LGUI));
+                    register_code(KC_L);
+                }
+            } else {
+                if (keymap_config.swap_lctl_lgui) {
+                    unregister_mods(mod_config(MOD_LCTL));
+                    unregister_mods(mod_config(MOD_LGUI));
+                    unregister_code(KC_Q);
+                } else {
+                    unregister_mods(mod_config(MOD_LGUI));
+                    unregister_code(KC_L);
+                }
+            }
+            break;
+    }
     return true;
 }
 
