@@ -277,12 +277,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 if (keymap_config.swap_lctl_lgui) {
                     // Mac
-                    set_unicode_input_mode(UNICODE_MODE_MACOS);
+                    register_mods(mod_config(MOD_LALT));
+                    register_code(KC_3);
                 } else {
                     // Windows
                     set_unicode_input_mode(UNICODE_MODE_WINDOWS);
+                    send_unicode_string("£");
                 }
-                send_unicode_string("£");
+            } else {
+                if (keymap_config.swap_lctl_lgui) {
+                    unregister_mods(mod_config(MOD_LALT));
+                    unregister_code(KC_3);
+                }
             }
             break;
     }
