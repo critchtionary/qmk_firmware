@@ -124,7 +124,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * |QK_BOOT|     | WIN  |  MAC |      |      |                    |      |WinFl | WinUp|      |      |      |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |      |      |MACWIN|      |      |      |-------.    ,-------|      |WinLf | WinDn| WinRt|      |      |
+ * |      |      |      |      |      |      |-------.    ,-------|      |WinLf | WinDn| WinRt|      |      |
  * |------+------+------+------+------+------|       |    |       |------+------+------+------+------+------|
  * |      |      |      |      |      |      |-------|    |-------|      |      |      |      |      |      |
  * `-----------------------------------------/       /     \      \-----------------------------------------'
@@ -135,7 +135,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_ADJUST] = LAYOUT(
   KC_LOCK, XXXXXXX, XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX,                       XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX,
   QK_BOOT, XXXXXXX, KC_QWERTY, KC_QWERTY_MAC, XXXXXXX, XXXXXXX,                       XXXXXXX, KC_WINFL, KC_WINUP, XXXXXXX,  XXXXXXX, XXXXXXX,
-  XXXXXXX, XXXXXXX, CG_TOGG,   XXXXXXX, XXXXXXX, XXXXXXX,                       XXXXXXX, KC_WINLF, KC_WINDN, KC_WINRT, XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX,                       XXXXXXX, KC_WINLF, KC_WINDN, KC_WINRT, XXXXXXX, XXXXXXX,
   XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX,
                       _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______
   )
@@ -143,10 +143,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 void move_window(uint16_t direction, bool pressed) {
     if (pressed) {
-        if (keymap_config.swap_lctl_lgui) {
+        if (get_highest_layer(default_layer_state) == _QWERTY_MAC) {
             // Mac
             register_mods(mod_config(MOD_LALT));
-            register_mods(mod_config(MOD_LGUI));
+            register_mods(mod_config(MOD_LCTL));
             register_code(direction);
         } else {
             // Windows
@@ -154,9 +154,9 @@ void move_window(uint16_t direction, bool pressed) {
             register_code(direction);
         }
     } else {
-        if (keymap_config.swap_lctl_lgui) {
+        if (get_highest_layer(default_layer_state) == _QWERTY_MAC) {
             unregister_mods(mod_config(MOD_LALT));
-            unregister_mods(mod_config(MOD_LGUI));
+            unregister_mods(mod_config(MOD_LCTL));
             unregister_code(direction);
         } else {
             unregister_mods(mod_config(MOD_LGUI));
@@ -179,7 +179,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return false;
         case KC_PRVWD:
             if (record->event.pressed) {
-                if (keymap_config.swap_lctl_lgui) {
+                if (get_highest_layer(default_layer_state) == _QWERTY_MAC) {
                     // Mac
                     register_mods(mod_config(MOD_LALT));
                     register_code(KC_LEFT);
@@ -189,7 +189,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     register_code(KC_LEFT);
                 }
             } else {
-                if (keymap_config.swap_lctl_lgui) {
+                if (get_highest_layer(default_layer_state) == _QWERTY_MAC) {
                     unregister_mods(mod_config(MOD_LALT));
                     unregister_code(KC_LEFT);
                 } else {
@@ -200,7 +200,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
         case KC_NXTWD:
              if (record->event.pressed) {
-                if (keymap_config.swap_lctl_lgui) {
+                if (get_highest_layer(default_layer_state) == _QWERTY_MAC) {
                     // Mac
                     register_mods(mod_config(MOD_LALT));
                     register_code(KC_RIGHT);
@@ -210,7 +210,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     register_code(KC_RIGHT);
                 }
             } else {
-                if (keymap_config.swap_lctl_lgui) {
+                if (get_highest_layer(default_layer_state) == _QWERTY_MAC) {
                     unregister_mods(mod_config(MOD_LALT));
                     unregister_code(KC_RIGHT);
                 } else {
@@ -221,9 +221,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
         case KC_SNIP:
             if (record->event.pressed) {
-                if (keymap_config.swap_lctl_lgui) {
+                if (get_highest_layer(default_layer_state) == _QWERTY_MAC) {
                     // Mac
-                    register_mods(mod_config(MOD_LCTL));
+                    register_mods(mod_config(MOD_LGUI));
                     register_mods(mod_config(MOD_LSFT));
                     register_code(KC_4);
                 } else {
@@ -233,8 +233,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     register_code(KC_S);
                 }
             } else {
-                if (keymap_config.swap_lctl_lgui) {
-                    unregister_mods(mod_config(MOD_LCTL));
+                if (get_highest_layer(default_layer_state) == _QWERTY_MAC) {
+                    unregister_mods(mod_config(MOD_LGUI));
                     unregister_mods(mod_config(MOD_LSFT));
                     unregister_code(KC_4);
                 } else {
@@ -261,7 +261,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
         case KC_LOCK:
             if (record->event.pressed) {
-                if (keymap_config.swap_lctl_lgui) {
+                if (get_highest_layer(default_layer_state) == _QWERTY_MAC) {
                     // Mac
                     register_mods(mod_config(MOD_LCTL));
                     register_mods(mod_config(MOD_LGUI));
@@ -272,7 +272,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     register_code(KC_L);
                 }
             } else {
-                if (keymap_config.swap_lctl_lgui) {
+                if (get_highest_layer(default_layer_state) == _QWERTY_MAC) {
                     unregister_mods(mod_config(MOD_LCTL));
                     unregister_mods(mod_config(MOD_LGUI));
                     unregister_code(KC_Q);
@@ -284,28 +284,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
         case KC_RSRCH:
             if (record->event.pressed) {
-                if (keymap_config.swap_lctl_lgui) {
-                    // Mac
-                    register_mods(mod_config(MOD_LGUI));
-                    register_code(KC_R);
-                } else {
-                    // Windows
-                    register_mods(mod_config(MOD_LCTL));
-                    register_code(KC_R);
-                }
+                register_mods(mod_config(MOD_LCTL));
+                register_code(KC_R);
             } else {
-                if (keymap_config.swap_lctl_lgui) {
-                    unregister_mods(mod_config(MOD_LGUI));
-                    unregister_code(KC_R);
-                } else {
-                    unregister_mods(mod_config(MOD_LCTL));
-                    unregister_code(KC_R);
-                }
+                unregister_mods(mod_config(MOD_LCTL));
+                unregister_code(KC_R);
             }
             break;
         case KC_GBP:
             if (record->event.pressed) {
-                if (keymap_config.swap_lctl_lgui) {
+                if (get_highest_layer(default_layer_state) == _QWERTY_MAC) {
                     // Mac
                     register_mods(mod_config(MOD_LALT));
                     register_code(KC_3);
@@ -315,7 +303,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     send_unicode_string("£");
                 }
             } else {
-                if (keymap_config.swap_lctl_lgui) {
+                if (get_highest_layer(default_layer_state) == _QWERTY_MAC) {
                     unregister_mods(mod_config(MOD_LALT));
                     unregister_code(KC_3);
                 }
