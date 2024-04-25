@@ -54,9 +54,6 @@ static void print_status_narrow(void) {
         case 0:
             oled_write_P(PSTR("Base\n"), false);
             break;
-        case 1:
-            oled_write_P(PSTR("Base\n"), false);
-            break;
         case 2:
             oled_write_P(PSTR("Cmds\n"), false);
             break;
