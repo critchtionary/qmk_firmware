@@ -42,7 +42,7 @@ static void render_logo(void) {
 
 static void print_status_narrow(void) {
     oled_write_P(PSTR("\n\n"), false);
-    if (keymap_config.swap_lctl_lgui) {
+    if (get_highest_layer(default_layer_state) == 1) {
         oled_write_ln_P(PSTR("Mac"), false);
     } else {
         oled_write_ln_P(PSTR("Win"), false);
@@ -54,11 +54,14 @@ static void print_status_narrow(void) {
         case 0:
             oled_write_P(PSTR("Base\n"), false);
             break;
-        case 1:
+        case 2:
             oled_write_P(PSTR("Cmds\n"), false);
             break;
-        case 2:
+        case 3:
             oled_write_P(PSTR("Symbl"), false);
+            break;
+        case 4:
+            oled_write_P(PSTR("Adjst"), false);
             break;
         default:
             oled_write_P(PSTR("Undef"), false);
@@ -67,8 +70,6 @@ static void print_status_narrow(void) {
 
     led_t led_usb_state = host_keyboard_led_state();
     oled_write_ln_P(PSTR("CPSLK"), led_usb_state.caps_lock);
-    oled_write_ln_P(PSTR("NUMLK"), led_usb_state.num_lock);
-    oled_write_ln_P(PSTR("SCRLK"), led_usb_state.scroll_lock);
 }
 
 bool oled_task_user(void) {
