@@ -101,7 +101,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,----------------------------------------.                     ,-----------------------------------------.
  * | ESC  |  F1  |  F2  |  F3  |  F4  |  F5  |                    |  F6  |  F7  |  F8  |  F9  | F10  | F11  |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * | Caps | Ins  | Pscr | Menu |RSrch |      |                    | PgUp | PWrd |  Up  | NWrd |      | F12  |
+ * | Caps |      |      |      |RSrch |      |                    | PgUp | PWrd |  Up  | NWrd |      | F12  |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * |LShift|      | Snip |      |      |      |-------.    ,-------| PgDn | Left | Down | Right|  Del |RShift|
  * |------+------+------+------+------+------|  MUTE |    |       |------+------+------+------+------+------|
@@ -113,7 +113,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_COMMANDS] = LAYOUT(
   _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                           KC_F6,   KC_F7,    KC_F8,    KC_F9,    KC_F10,  KC_F11,
-  KC_CAPS, KC_INS,  KC_PSCR, KC_APP,  C(KC_R), XXXXXXX,                         KC_PGUP, KC_PRVWD, KC_UP,    KC_NXTWD, XXXXXXX, KC_F12,
+  KC_CAPS, XXXXXXX, XXXXXXX, XXXXXXX, C(KC_R), XXXXXXX,                         KC_PGUP, KC_PRVWD, KC_UP,    KC_NXTWD, XXXXXXX, KC_F12,
   _______, XXXXXXX, KC_SNIP, XXXXXXX, XXXXXXX, XXXXXXX,                         KC_PGDN, KC_LEFT,  KC_DOWN,  KC_RGHT,  KC_DEL,  _______,
   _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,       _______, XXXXXXX, KC_HOME,  XXXXXXX,  KC_END,   XXXXXXX, _______,
                     _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______
