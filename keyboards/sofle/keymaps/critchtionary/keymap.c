@@ -6,6 +6,7 @@
 
 enum sofle_layers {
     _QWERTY,
+    _QWERTY_MAC,
     _COMMANDS,
     _SYMBOLS,
 
@@ -14,6 +15,7 @@ enum sofle_layers {
 
 enum custom_keycodes {
     KC_QWERTY = QK_USER,
+    KC_QWERTY_MAC,
     KC_PRVWD,
     KC_NXTWD,
     KC_SNIP,
@@ -50,6 +52,29 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_LSFT,  KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                      KC_H,    KC_J,    KC_K,    KC_L,   KC_SCLN, KC_RSFT,
   KC_GRV,   KC_Z,   KC_X,    KC_C,    KC_V,    KC_B, KC_MUTE,    XXXXXXX, KC_N,    KC_M,    KC_COMM, KC_DOT, KC_SLSH, KC_ENT,
                   KC_LGUI, KC_LALT, KC_LCTL, TL_LOWR, KC_SPC,    KC_BSPC, TL_UPPR, KC_RCTL, KC_RALT, KC_RGUI
+),
+/*
+ * QWERTY_MAC
+ * ,-----------------------------------------.                    ,-----------------------------------------.
+ * | ESC  |   1  |   2  |   3  |   4  |   5  |                    |   6  |   7  |   8  |   9  |   0  |  -   |
+ * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
+ * | Tab  |   Q  |   W  |   E  |   R  |   T  |                    |   Y  |   U  |   I  |   O  |   P  |  '   |
+ * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
+ * |LShift|   A  |   S  |   D  |   F  |   G  |-------.    ,-------|   H  |   J  |   K  |   L  |   ;  |RShift|
+ * |------+------+------+------+------+------|  MUTE |    |       |------+------+------+------+------+------|
+ * |  `   |   Z  |   X  |   C  |   V  |   B  |-------|    |-------|   N  |   M  |   ,  |   .  |   /  |Enter |
+ * `-----------------------------------------/       /     \      \-----------------------------------------'
+ *            | LOpt | LCTR | LCMD |LOWER | /Space  /       \ Bspc \  |RAISE | RCMD | RCTK | ROpt |
+ *            |      |      |      |      |/       /         \      \ |      |      |      |      |
+ *            `-----------------------------------'           '------''---------------------------'
+ */ 
+
+[_QWERTY_MAC] = LAYOUT(
+  KC_ESC,   KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                      KC_6,    KC_7,    KC_8,    KC_9,   KC_0,    KC_MINS,
+  KC_TAB,   KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                      KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,    KC_QUOT,
+  KC_LSFT,  KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                      KC_H,    KC_J,    KC_K,    KC_L,   KC_SCLN, KC_RSFT,
+  KC_GRV,   KC_Z,   KC_X,    KC_C,    KC_V,    KC_B, KC_MUTE,    XXXXXXX, KC_N,    KC_M,    KC_COMM, KC_DOT, KC_SLSH, KC_ENT,
+                  KC_LOPT, KC_LCTL, KC_LCMD, TL_LOWR, KC_SPC,    KC_BSPC, TL_UPPR, KC_RCMD, KC_RCTL, KC_ROPT
 ),
 /* SYMBOLS
  * ,-----------------------------------------.                    ,-----------------------------------------.
@@ -97,7 +122,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------.                    ,-----------------------------------------.
  * | Lock |      |      |      |      |      |                    |      |      |      |      |      |      |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * |QK_BOOT|     |QWERTY|      |      |      |                    |      |WinFl | WinUp|      |      |      |
+ * |QK_BOOT|     | WIN  |  MAC |      |      |                    |      |WinFl | WinUp|      |      |      |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * |      |      |MACWIN|      |      |      |-------.    ,-------|      |WinLf | WinDn| WinRt|      |      |
  * |------+------+------+------+------+------|       |    |       |------+------+------+------+------+------|
@@ -109,7 +134,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
   [_ADJUST] = LAYOUT(
   KC_LOCK, XXXXXXX, XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX,                       XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX,
-  QK_BOOT, XXXXXXX, KC_QWERTY, XXXXXXX, XXXXXXX, XXXXXXX,                       XXXXXXX, KC_WINFL, KC_WINUP, XXXXXXX,  XXXXXXX, XXXXXXX,
+  QK_BOOT, XXXXXXX, KC_QWERTY, KC_QWERTY_MAC, XXXXXXX, XXXXXXX,                       XXXXXXX, KC_WINFL, KC_WINUP, XXXXXXX,  XXXXXXX, XXXXXXX,
   XXXXXXX, XXXXXXX, CG_TOGG,   XXXXXXX, XXXXXXX, XXXXXXX,                       XXXXXXX, KC_WINLF, KC_WINDN, KC_WINRT, XXXXXXX, XXXXXXX,
   XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,     XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX, XXXXXXX,
                       _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______
@@ -145,6 +170,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_QWERTY:
             if (record->event.pressed) {
                 set_single_persistent_default_layer(_QWERTY);
+            }
+            return false;
+        case KC_QWERTY_MAC:
+            if (record->event.pressed) {
+                set_single_persistent_default_layer(_QWERTY_MAC);
             }
             return false;
         case KC_PRVWD:
