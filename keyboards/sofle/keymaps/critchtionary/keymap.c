@@ -26,7 +26,6 @@ enum custom_keycodes {
     KC_WINRT,
     KC_WINFL,
     KC_LOCK,
-    KC_RSRCH,
     KC_GBP,
 };
 
@@ -102,23 +101,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,----------------------------------------.                     ,-----------------------------------------.
  * | ESC  |  F1  |  F2  |  F3  |  F4  |  F5  |                    |  F6  |  F7  |  F8  |  F9  | F10  | F11  |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
- * | Caps | Ins  | Pscr | Menu |RSrch |      |                    | PgUp | PWrd |  Up  | NWrd | DLine| F12  |
+ * | Caps | Ins  | Pscr | Menu |RSrch |      |                    | PgUp | PWrd |  Up  | NWrd |      | F12  |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * |LShift|      | Snip |      |      |      |-------.    ,-------| PgDn | Left | Down | Right|  Del |RShift|
  * |------+------+------+------+------+------|  MUTE |    |       |------+------+------+------+------+------|
- * |      | Undo |  Cut | Copy | Paste|      |-------|    |-------|      | Home |      |  End |      |Enter |
+ * |      |      |      |      |      |      |-------|    |-------|      | Home |      |  End |      |Enter |
  * `-----------------------------------------/       /     \      \-----------------------------------------'
  *            |      |      |      |LOWER | /Space  /       \ Bspc \  |RAISE |      |      |      |
  *            |      |      |      |      |/       /         \      \ |      |      |      |      |
  *            `-----------------------------------'           '------''---------------------------'
  */
- // TODO: C() commands are broken now
 [_COMMANDS] = LAYOUT(
-  _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,    KC_F5,                           KC_F6,   KC_F7,    KC_F8,    KC_F9,    KC_F10,     KC_F11,
-  KC_CAPS, KC_INS,  KC_PSCR, KC_APP,  KC_RSRCH, XXXXXXX,                         KC_PGUP, KC_PRVWD, KC_UP,    KC_NXTWD, C(KC_BSPC), KC_F12,
-  _______, XXXXXXX, KC_SNIP, XXXXXXX, XXXXXXX,  XXXXXXX,                         KC_PGDN, KC_LEFT,  KC_DOWN,  KC_RGHT,  KC_DEL,     _______,
-  _______, C(KC_Z), C(KC_X), C(KC_C), C(KC_V),  XXXXXXX, _______,       _______, XXXXXXX, KC_HOME,  XXXXXXX,  KC_END,   XXXXXXX,    _______,
-                     _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______
+  _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                           KC_F6,   KC_F7,    KC_F8,    KC_F9,    KC_F10,  KC_F11,
+  KC_CAPS, KC_INS,  KC_PSCR, KC_APP,  C(KC_R), XXXXXXX,                         KC_PGUP, KC_PRVWD, KC_UP,    KC_NXTWD, XXXXXXX, KC_F12,
+  _______, XXXXXXX, KC_SNIP, XXXXXXX, XXXXXXX, XXXXXXX,                         KC_PGDN, KC_LEFT,  KC_DOWN,  KC_RGHT,  KC_DEL,  _______,
+  _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______,       _______, XXXXXXX, KC_HOME,  XXXXXXX,  KC_END,   XXXXXXX, _______,
+                    _______, _______, _______, _______, _______,       _______, _______, _______, _______, _______
 ),
 /* ADJUST
  * ,-----------------------------------------.                    ,-----------------------------------------.
@@ -184,20 +182,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 if (get_highest_layer(default_layer_state) == _QWERTY_MAC) {
                     // Mac
                     register_mods(mod_config(MOD_LALT));
-                    register_code(KC_LEFT);
                 } else {
                     // Windows
                     register_mods(mod_config(MOD_LCTL));
-                    register_code(KC_LEFT);
                 }
+                register_code(KC_LEFT);
             } else {
                 if (get_highest_layer(default_layer_state) == _QWERTY_MAC) {
                     unregister_mods(mod_config(MOD_LALT));
-                    unregister_code(KC_LEFT);
                 } else {
                     unregister_mods(mod_config(MOD_LCTL));
-                    unregister_code(KC_LEFT);
                 }
+                unregister_code(KC_LEFT);
             }
             break;
         case KC_NXTWD:
@@ -205,43 +201,37 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 if (get_highest_layer(default_layer_state) == _QWERTY_MAC) {
                     // Mac
                     register_mods(mod_config(MOD_LALT));
-                    register_code(KC_RIGHT);
                 } else {
                     // Windows
                     register_mods(mod_config(MOD_LCTL));
-                    register_code(KC_RIGHT);
                 }
+                register_code(KC_RIGHT);
             } else {
                 if (get_highest_layer(default_layer_state) == _QWERTY_MAC) {
                     unregister_mods(mod_config(MOD_LALT));
-                    unregister_code(KC_RIGHT);
                 } else {
                     unregister_mods(mod_config(MOD_LCTL));
-                    unregister_code(KC_RIGHT);
                 }
+                unregister_code(KC_RIGHT);
             }
             break;
         case KC_SNIP:
             if (record->event.pressed) {
+                register_mods(mod_config(MOD_LGUI));
+                register_mods(mod_config(MOD_LSFT));
                 if (get_highest_layer(default_layer_state) == _QWERTY_MAC) {
                     // Mac
-                    register_mods(mod_config(MOD_LGUI));
-                    register_mods(mod_config(MOD_LSFT));
                     register_code(KC_4);
                 } else {
                     // Windows
-                    register_mods(mod_config(MOD_LGUI));
-                    register_mods(mod_config(MOD_LSFT));
                     register_code(KC_S);
                 }
             } else {
+                unregister_mods(mod_config(MOD_LGUI));
+                unregister_mods(mod_config(MOD_LSFT));
                 if (get_highest_layer(default_layer_state) == _QWERTY_MAC) {
-                    unregister_mods(mod_config(MOD_LGUI));
-                    unregister_mods(mod_config(MOD_LSFT));
                     unregister_code(KC_4);
                 } else {
-                    unregister_mods(mod_config(MOD_LGUI));
-                    unregister_mods(mod_config(MOD_LSFT));
                     unregister_code(KC_S);
                 }
             }
@@ -282,15 +272,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     unregister_mods(mod_config(MOD_LGUI));
                     unregister_code(KC_L);
                 }
-            }
-            break;
-        case KC_RSRCH:
-            if (record->event.pressed) {
-                register_mods(mod_config(MOD_LCTL));
-                register_code(KC_R);
-            } else {
-                unregister_mods(mod_config(MOD_LCTL));
-                unregister_code(KC_R);
             }
             break;
         case KC_GBP:
