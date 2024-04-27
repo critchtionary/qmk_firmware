@@ -70,6 +70,12 @@ static void print_status_narrow(void) {
 
     led_t led_usb_state = host_keyboard_led_state();
     oled_write_ln_P(PSTR("CPSLK"), led_usb_state.caps_lock);
+
+    if (get_mods() & MOD_MASK_SHIFT) {
+        oled_write_ln_P(PSTR("SHIFT"), true);
+    } else {
+        oled_write_ln_P(PSTR("shift"), false);
+    } 
 }
 
 bool oled_task_user(void) {
@@ -77,6 +83,7 @@ bool oled_task_user(void) {
         print_status_narrow();
     } else {
         render_logo();
+        oled_scroll_right();
     }
     return false;
 }
