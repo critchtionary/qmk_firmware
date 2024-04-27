@@ -34,11 +34,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * JKLP
  * ,-----------------------------------------.                    ,-----------------------------------------.
  * | ESC  |   1  |   2  |   3  |   4  |   5  |                    |   6  |   7  |   8  |   9  |   0  |  -   |
- * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
+ * |------+------+------+------+------+------|                    |------+------+------+------+------+------|      
  * | Tab  |   Q  |   W  |   E  |   R  |   T  |                    |   Y  |   U  |   I  |   O  |   ;  |  '   |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * |LShift|   A  |   S  |   D  |   F  |   G  |-------.    ,-------|   H  |   J  |   K  |   L  |   P  |RShift|
- * |------+------+------+------+------+------|  MUTE |    |       |------+------+------+------+------+------|
+ * |------+------+------+------+------+------|       |    | MUTE  |------+------+------+------+------+------|
  * | LAlt |   Z  |   X  |   C  |   V  |   B  |-------|    |-------|   N  |   M  |   ,  |   .  |   /  |Enter |
  * `-----------------------------------------/       /     \      \-----------------------------------------'
  *            | LGUI | LAlt | LCTR |LOWER | /Space  /       \ Bspc \  |RAISE | RCTR | RAlt | RGUI |
@@ -50,7 +50,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_ESC,   KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                      KC_6,    KC_7,    KC_8,    KC_9,   KC_0,    KC_MINS,
   KC_TAB,   KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                      KC_Y,    KC_U,    KC_I,    KC_O,   KC_SCLN,    KC_QUOT,
   KC_LSFT,  KC_A,   KC_S,    KC_D,    KC_F,    KC_G,                      KC_H,    KC_J,    KC_K,    KC_L,   KC_P, KC_RSFT,
-  KC_LALT,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B, KC_MUTE,    XXXXXXX, KC_N,    KC_M,    KC_COMM, KC_DOT, KC_SLSH, KC_ENT,
+  KC_LALT,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B, XXXXXXX,    KC_MUTE, KC_N,    KC_M,    KC_COMM, KC_DOT, KC_SLSH, KC_ENT,
                   KC_LGUI, KC_LALT, KC_LCTL, TL_LOWR, KC_SPC,    KC_BSPC, TL_UPPR, KC_RCTL, KC_RALT, KC_RGUI
 ),
 /*
@@ -299,18 +299,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #ifdef ENCODER_ENABLE
 
 bool encoder_update_user(uint8_t index, bool clockwise) {
-    if (index == 0) {
-        // Left encoder is backwards
+    if (index == 1) {
         if (clockwise) {
-            tap_code(KC_VOLD);
-        } else {
             tap_code(KC_VOLU);
-        }
-   } else if (index == 1) {
-        if (clockwise) {
-            tap_code(KC_MS_WH_DOWN);
         } else {
-            tap_code(KC_MS_WH_UP);
+            tap_code(KC_VOLD);
         }
     }
     return false;
